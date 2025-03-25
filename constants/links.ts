@@ -26,7 +26,7 @@ export const sidebarLinks = [
   {
     icon: Bell,
     route: "/lender/notify",
-    label: "Notifications",
+    label: "Review",
   },
   {
     icon: User,
