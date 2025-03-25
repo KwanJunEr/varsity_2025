@@ -1,5 +1,6 @@
-"use client"
-
+"use client";
+import React from 'react'
+import { mockUserData } from '../mockUserData'
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Award, Wallet, TrendingUp, Users, Zap, ChevronRight, Sparkles } from "lucide-react"
@@ -10,17 +11,22 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import PoolsTabContent from './PoolsTabContent';
+import PerksTabContent from './PerksTabContent';
+import AchievementTabsContent from './AchievementTabsContent';
+import LevelUpBenefits from './LevelUpBenefits';
+import ImpactStats from './ImpactStats';
 
-
-import Hero from '@/components/lender/sections/Hero'
-import React from 'react'
-
-const Dashboard  = () => {
+const RightColumnContent = () => {
   return (
-   <section className='py-2 px-2'>
+    <div className="space-y-6">
+         
+        <LevelUpBenefits/>
+         <ImpactStats/>
 
-   </section>
+          
+        </div>
   )
 }
 
-export default Dashboard 
+export default RightColumnContent
