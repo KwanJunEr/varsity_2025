@@ -50,7 +50,9 @@ const ProfileHeader = () => {
                </Badge>
              </div>
              <p className="text-muted-foreground mt-1">Member since {mockUserData.joinDate}</p>
-
+            <div className='mt-2'>
+                <p>Total Points Earned: <span>1200 reward points</span></p>
+            </div>
              <div className="mt-4 max-w-md">
                <div className="flex justify-between mb-1">
                  <div className="flex items-center">
