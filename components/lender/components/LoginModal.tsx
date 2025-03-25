@@ -1,5 +1,6 @@
 "use client";
 import React from 'react'
+import { useRouter } from 'next/navigation';
 
 
 import { useState } from "react"
@@ -19,6 +20,7 @@ interface LoginModalProps {
 type LoginStep = "initial" | "loading" | "metamask" | "success"
 
 const LoginModal = ({open, onOpenChange}: LoginModalProps) => {
+    const router = useRouter()
     const [step, setStep] = useState<LoginStep>("initial")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -54,6 +56,8 @@ const LoginModal = ({open, onOpenChange}: LoginModalProps) => {
         onOpenChange(false)
         // In a real app, you would redirect to the dashboard here
         // window.location.href = "/dashboard"
+        onOpenChange(false)
+        router.push("/lender/lenderdashboard") 
       }, 1000)
     }, 1500)
   }
