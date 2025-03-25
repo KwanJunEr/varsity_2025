@@ -1,11 +1,20 @@
+import LandingPageHeader from '@/components/lender/sections/LandingPageHeader'
+import CallToAction from '@/components/lender/sections/CallToAction'
+import Features from '@/components/lender/sections/Features'
+import Hero from '@/components/lender/sections/Hero'
+import LandingPageFooter from '@/components/lender/sections/LandingPageFooter'
 import React from 'react'
 
-const page = () => {
+const LenderLandingPage = () => {
   return (
-    <div>
-      
-    </div>
+    <>
+      <LandingPageHeader/>
+      <Hero/>
+      <Features/>
+      <CallToAction/>
+      <LandingPageFooter/>
+    </>
   )
 }
 
-export default page
+export default LenderLandingPage
