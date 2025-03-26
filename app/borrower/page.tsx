@@ -13,18 +13,24 @@ import {
 
 export default function BorrowerPage() {
   const [loans, setLoans] = useState<Loan[]>(initialLoans);
-  const [userMetrics, setUserMetrics] = useState<UserMetrics>(() => {
+  const [userMetrics, setUserMetrics] =
+    useState<UserMetrics>(initialUserMetrics);
+
+  useEffect(() => {
     const storedPoints = localStorage.getItem("points");
     const storedReputation = localStorage.getItem("reputation");
-    return {
-      points: storedPoints
-        ? parseInt(storedPoints, 10)
-        : initialUserMetrics.points,
-      reputation: storedReputation
-        ? parseInt(storedReputation, 10)
-        : initialUserMetrics.reputation,
-    };
-  });
+
+    if (storedPoints || storedReputation) {
+      setUserMetrics({
+        points: storedPoints
+          ? parseInt(storedPoints, 10)
+          : initialUserMetrics.points,
+        reputation: storedReputation
+          ? parseInt(storedReputation, 10)
+          : initialUserMetrics.reputation,
+      });
+    }
+  }, []);
 
   useEffect(() => {
     const handleStorageChange = () => {
