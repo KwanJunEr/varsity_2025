@@ -3,6 +3,8 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -118,5 +120,37 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  .root-layout {
+    @apply flex h-16 items-center justify-between p-5  sm:p-8 md:hidden;
+  }
+
+  .sidebar{
+    @apply sticky left-0 top-0 flex h-screen w-fit flex-col justify-between border-r border-gray-200 bg-white pt-8 text-white max-md:hidden sm:p-4 xl:p-6 2xl:w-[355px];
+  }
+
+  .footer_image {
+    @apply relative flex items-center justify-center size-[24px]; /* Increased size */
+  }
+
+  .sidebar-link {
+    @apply flex gap-3 items-center py-1 md:p-3 2xl:p-4 rounded-lg justify-center xl:justify-start;
+  }
+  
+  .sidebar-logo {
+    @apply  text-[26px] font-bold text-black max-xl:hidden;   
+  }
+  .sidebar-label {
+    @apply text-[16px] font-semibold text-black max-xl:hidden;
+  }
+}
+
+@layer components{
+  .section-description {
+    @apply text-center text-[22px] leading-[30px] tracking-tight text-[#010D3E];
+  }
+  .section-title {
+    @apply text-center text-3xl md:text-[54px] md:leading-[60px] font-bold tracking-tighter bg-gradient-to-b from-black to-[#001E80] text-transparent bg-clip-text;
   }
 }
