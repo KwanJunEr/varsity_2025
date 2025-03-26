@@ -1,14 +1,24 @@
-import Link from "next/link"
-import { BadgeInfo } from "lucide-react"
+import { BadgeInfo } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-
-import BorrowerStats from "./components/BorrowerStats"
-import LoanRankings from "./components/LoanRankings"
-import FinancialHealthImpact from "./components/FinancialHealthImpact"
+import BorrowerStats from "./components/BorrowerStats";
+import LoanRankings from "./components/LoanRankings";
+import FinancialHealthImpact from "./components/FinancialHealthImpact";
 
 export default function Home() {
   return (
@@ -20,17 +30,18 @@ export default function Home() {
               Microloan Analytics Dashboard
             </h1>
             <p className="max-w-[700px] text-lg text-muted-foreground">
-              Track microloan performance, borrower statistics, and financial health impacts
+              Track microloan performance, borrower statistics, and financial
+              health impacts
             </p>
           </div>
 
           <div className="grid gap-6">
-           
-
             <Card>
               <CardHeader>
                 <CardTitle>Borrower Financial Health Statistics</CardTitle>
-                <CardDescription>Key metrics on borrower financial status</CardDescription>
+                <CardDescription>
+                  Key metrics on borrower financial status
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <BorrowerStats />
@@ -41,7 +52,9 @@ export default function Home() {
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <div>
                   <CardTitle>Microloan Rankings</CardTitle>
-                  <CardDescription>Performance ranking of available microloans</CardDescription>
+                  <CardDescription>
+                    Performance ranking of available microloans
+                  </CardDescription>
                 </div>
                 <TooltipProvider>
                   <Tooltip>
@@ -53,8 +66,9 @@ export default function Home() {
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
                       <p>
-                        Risk scores are calculated based on historical repayment rates, borrower credit history, loan
-                        purpose, and regional economic factors.
+                        Risk scores are calculated based on historical repayment
+                        rates, borrower credit history, loan purpose, and
+                        regional economic factors.
                       </p>
                     </TooltipContent>
                   </Tooltip>
@@ -68,19 +82,22 @@ export default function Home() {
             <Card>
               <CardHeader>
                 <CardTitle>Financial Health Impact</CardTitle>
-                <CardDescription>Post-borrowing financial health indicators</CardDescription>
+                <CardDescription>
+                  Post-borrowing financial health indicators
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <FinancialHealthImpact />
               </CardContent>
               <CardFooter>
-                <p className="text-sm text-muted-foreground">Data based on 12-month follow-up surveys with borrowers</p>
+                <p className="text-sm text-muted-foreground">
+                  Data based on 12-month follow-up surveys with borrowers
+                </p>
               </CardFooter>
             </Card>
           </div>
         </section>
       </main>
     </div>
-  )
+  );
 }
-

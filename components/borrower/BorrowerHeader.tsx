@@ -9,14 +9,24 @@ export default function Navbar() {
   return (
     <nav className="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
       <div className="flex justify-between h-16 items-center px-10">
-        <Link href = {"/dashboard"}>
-        <h2 className="font-extrabold text-2xl">LendSync</h2>
-        </Link >
+        <Link href={"/borrower"}>
+          <h2 className="font-extrabold text-2xl">LendSync</h2>
+        </Link>
         <div className="flex space-x-8">
           <Link
-            href="/borrower/mymicroloan"
+            href="/borrower"
             className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-              pathname === "/mymicroloan"
+              pathname === "/microloan"
+                ? "border-indigo-500 text-gray-900"
+                : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+            }`}
+          >
+            Dashboard
+          </Link>
+          <Link
+            href="/borrower/microloan"
+            className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+              pathname === "/microloan"
                 ? "border-indigo-500 text-gray-900"
                 : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
             }`}
@@ -34,7 +44,7 @@ export default function Navbar() {
             Marketplace
           </Link>
           <Link
-            href="/borrower/myreputation"
+            href="/borrower/reputation"
             className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
               pathname === "/pet"
                 ? "border-indigo-500 text-gray-900"
@@ -42,6 +52,12 @@ export default function Navbar() {
             }`}
           >
             My Reputation
+          </Link>
+          <Link
+            href="/"
+            className="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+          >
+            Logout
           </Link>
         </div>
       </div>

@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { ArrowUpRight } from "lucide-react"
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 
 export default function LoanRankings() {
   const loans = [
@@ -23,7 +23,7 @@ export default function LoanRankings() {
       id: 2,
       name: "Purchase of Bicyle",
       provider: "Personal MicroLoan",
-      link: "/personal-loan", 
+      link: "/personal-loan",
       riskScore: 40,
       riskLevel: "Medium",
       interestRate: "6.5%",
@@ -39,28 +39,28 @@ export default function LoanRankings() {
       interestRate: "8.8%",
       maxAmount: "$2,500",
     },
-   
-  ]
+  ];
 
   const getRiskBadgeColor = (level: string) => {
     switch (level) {
       case "Low":
-        return "bg-green-100 text-green-800 hover:bg-green-100"
+        return "bg-green-100 text-green-800 hover:bg-green-100";
       case "Medium":
-        return "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+        return "bg-yellow-100 text-yellow-800 hover:bg-yellow-100";
       case "High":
-        return "bg-red-100 text-red-800 hover:bg-red-100"
+        return "bg-red-100 text-red-800 hover:bg-red-100";
       default:
-        return ""
+        return "";
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
       <div className="text-sm text-muted-foreground mb-4">
         <p>
-          Risk scores range from 0-100, with higher scores indicating lower risk. Scores are calculated based on
-          historical repayment data, borrower profiles, and economic conditions.
+          Risk scores range from 0-100, with higher scores indicating lower
+          risk. Scores are calculated based on historical repayment data,
+          borrower profiles, and economic conditions.
         </p>
       </div>
 
@@ -72,19 +72,29 @@ export default function LoanRankings() {
           >
             <div className="space-y-1 mb-2 md:mb-0">
               <div className="font-medium">{loan.name}</div>
-              <div className="text-sm text-muted-foreground">{loan.provider}</div>
+              <div className="text-sm text-muted-foreground">
+                {loan.provider}
+              </div>
             </div>
 
             <div className="flex flex-col md:flex-row items-start md:items-center gap-4 w-full md:w-auto">
               <div className="flex flex-col gap-1 w-full md:w-auto">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium">Risk Score: {loan.riskScore}</span>
-                  <Badge variant="outline" className={getRiskBadgeColor(loan.riskLevel)}>
+                  <span className="text-sm font-medium">
+                    Risk Score: {loan.riskScore}
+                  </span>
+                  <Badge
+                    variant="outline"
+                    className={getRiskBadgeColor(loan.riskLevel)}
+                  >
                     {loan.riskLevel}
                   </Badge>
                 </div>
                 <div className="mr-2 min-w-[200px]">
-                <Progress value={loan.riskScore} className="w-full md:w-[120px] h-2" />
+                  <Progress
+                    value={loan.riskScore}
+                    className="w-full md:w-[120px] h-2"
+                  />
                 </div>
               </div>
 
@@ -95,7 +105,7 @@ export default function LoanRankings() {
                 </div>
 
                 <Button variant="outline" size="sm" asChild>
-                  <Link href={`/borrower/mymicroloan/${loan.link}`}>
+                  <Link href={`/borrower/microloan/${loan.link}`}>
                     <span>Details</span>
                     <ArrowUpRight className="ml-1 h-3 w-3" />
                   </Link>
@@ -106,6 +116,5 @@ export default function LoanRankings() {
         ))}
       </div>
     </div>
-  )
+  );
 }
-

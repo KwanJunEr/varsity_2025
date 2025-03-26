@@ -1,15 +1,19 @@
 "use client";
-
-import ChatArea from "@/components/custom/ChatArea";
-import GameScene from "@/components/custom/GameScene";
+import LandingPageHeader from "@/components/lender/sections/LandingPageHeader";
+import CallToAction from "@/components/lender/sections/CallToAction";
+import Features from "@/components/lender/sections/Features";
+import Hero from "@/components/lender/sections/Hero";
+import LandingPageFooter from "@/components/lender/sections/LandingPageFooter";
+import React from "react";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex gap-[32px] row-start-2 items-center sm:items-start">
-        <ChatArea />
-        <GameScene />
-      </main>
-    </div>
+    <>
+      <LandingPageHeader />
+      <Hero />
+      <Features />
+      <CallToAction />
+      <LandingPageFooter />
+    </>
   );
 }

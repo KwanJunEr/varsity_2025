@@ -1,15 +1,9 @@
-import {
-  Gift,
-  Users,
-  LayoutDashboard,
-  User,
-  Bell,
-} from "lucide-react";
+import { Gift, Users, LayoutDashboard, User, Bell } from "lucide-react";
 
 export const sidebarLinks = [
   {
     icon: LayoutDashboard,
-    route: "/lender/lenderdashboard",
+    route: "/lender/dashboard",
     label: "Dashboard",
   },
   {
@@ -20,7 +14,7 @@ export const sidebarLinks = [
 
   {
     icon: Gift,
-    route: "/lender/lenderrewards",
+    route: "/lender/rewards",
     label: "Rewards",
   },
   {
@@ -30,7 +24,7 @@ export const sidebarLinks = [
   },
   {
     icon: User,
-    route: "/lender/lenderprofile",
+    route: "/lender/profile",
     label: "Profile",
   },
 ];
