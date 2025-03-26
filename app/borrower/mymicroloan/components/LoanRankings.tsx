@@ -14,24 +14,26 @@ export default function LoanRankings() {
       name: "Small Business Starter",
       provider: "Business MicroLoan",
       link: "/business-loan",
-      riskScore: 20,
-      riskLevel: "Low",
+      riskScore: 50,
+      riskLevel: "Medium",
       interestRate: "5.2%",
-      maxAmount: "$2,000",
+      maxAmount: "$15,000",
     },
     {
       id: 2,
       name: "Purchase of Bicyle",
       provider: "Personal MicroLoan",
+      link: "/personal-loan", 
       riskScore: 40,
       riskLevel: "Medium",
       interestRate: "6.5%",
-      maxAmount: "$3,500",
+      maxAmount: "$1,000",
     },
     {
       id: 3,
       name: "Purchase of New Washing Machine",
       provider: "Group Borrowing",
+      link: "/group-borrow",
       riskScore: 70,
       riskLevel: "High",
       interestRate: "8.8%",
@@ -93,7 +95,7 @@ export default function LoanRankings() {
                 </div>
 
                 <Button variant="outline" size="sm" asChild>
-                  <Link href={`/loans/${loan.link}`}>
+                  <Link href={`/borrower/mymicroloan/${loan.link}`}>
                     <span>Details</span>
                     <ArrowUpRight className="ml-1 h-3 w-3" />
                   </Link>
