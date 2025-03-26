@@ -24,7 +24,7 @@ export default function Navbar() {
             My MicroLoan
           </Link>
           <Link
-            href="/marketplace"
+            href="/borrower/marketplace"
             className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
               pathname === "/marketplace"
                 ? "border-indigo-500 text-gray-900"
@@ -34,14 +34,14 @@ export default function Navbar() {
             Marketplace
           </Link>
           <Link
-            href="/pet"
+            href="/borrower/myreputation"
             className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
               pathname === "/pet"
                 ? "border-indigo-500 text-gray-900"
                 : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
             }`}
           >
-            Pet
+            My Reputation
           </Link>
         </div>
       </div>
