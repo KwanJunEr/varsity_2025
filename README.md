@@ -11,8 +11,15 @@ LendDAO (for Lenders)
 
 1) Voting & Community
 2) AI-driven risk scoring for high profile microloan applicaiton
+3) Incentivized Stake Pooling 
 
+LendSync (For Borrowers)
 
+1) AI-driven insights (repayment strategy & financial advices)
+2) Prompt-based microloan applicaton
+3) Reputation-based Scoring (NFT Pet)
+4) Business Loan Disbursement
+5) Gaminification and Education
 
 
 
