@@ -1,3 +1,21 @@
+Youtube Video Link: https://www.youtube.com/watch?v=56pb3lKZY60
+
+Target Users: Lenders and Borrowers 
+
+Comprise of Two Parts:
+
+LendSync (for Borrowers)
+
+
+LendDAO (for Lenders)
+
+1) Voting & Community
+2) AI-driven risk scoring for high profile microloan applicaiton
+
+
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
