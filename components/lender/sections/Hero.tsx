@@ -10,7 +10,7 @@ const Hero = () => {
         {/*Everything on the right*/}
         <div className="md:w-[678px] flex flex-col items-center md:items-start justify-center text-center md:text-left">
           <div className="text-sm inline-flex border border-[#222]/10 px-3 py-1 rounded-lg tracking-tight">
-            LenderDAO
+            Malaysia's Best P2P Microloan Ecosystem
           </div>
           <div className="flex flex-col items-center md:items-start">
             <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter bg-gradient-to-b from-black to-[#001E80] text-transparent bg-clip-text mt-6">

@@ -22,7 +22,7 @@ export default function MicroLoanTable({
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
 
   return (
-    <div className="w-full max-w-4xl overflow-x-auto">
+    <div className="w-full max-w-4xl overflow-x-auto mt-10">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>

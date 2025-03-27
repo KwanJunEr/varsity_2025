@@ -10,6 +10,8 @@ import {
   Loan,
   UserMetrics,
 } from "@/data/loanData";
+import WalletCard from "@/components/borrower/Wallet";
+import StatsCard from "@/components/borrower/StatsCard";
 
 export default function BorrowerPage() {
   const [loans, setLoans] = useState<Loan[]>(initialLoans);
@@ -69,23 +71,29 @@ export default function BorrowerPage() {
   };
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <div className="flex">
-          <ChatArea />
-          <GameScene />
-        </div>
-        <div className="w-full max-w-4xl">
-          <div className="mb-4 flex justify-between items-center">
-            <h2 className="text-xl font-semibold">Your Microloans</h2>
-            <div className="text-sm">
-              <span className="mr-4">Points: {userMetrics.points}</span>
-              <span>Reputation: {userMetrics.reputation}</span>
-            </div>
+    <section>
+      <div className="flex flex-row min-h-[200px] min-w-[500px] mt-[70px] items-center justify-center gap-5">
+        <WalletCard />
+        <StatsCard/>
+      </div>
+      <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center  p-8 gap-16 font-[family-name:var(--font-geist-sans)]">
+        <main className="flex flex-col  row-start-2 items-center sm:items-start">
+          <div className="flex">
+            <ChatArea />
+            <GameScene />
           </div>
-          <MicroLoanTable loans={loans} onPayment={handlePayment} />
-        </div>
-      </main>
-    </div>
+          <div className="w-full max-w-4xl">
+            <div className="mb-4 flex justify-between items-center">
+              <h2 className="text-xl font-semibold mt-10">Your Microloans Application</h2>
+              {/* <div className="text-sm">
+                <span className="mr-4">Points: {userMetrics.points}</span>
+                <span>Reputation: {userMetrics.reputation}</span>
+              </div> */}
+            </div>
+            <MicroLoanTable loans={loans} onPayment={handlePayment} />
+          </div>
+        </main>
+      </div>
+    </section>
   );
 }

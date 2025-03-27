@@ -47,11 +47,11 @@ export default function ChatArea() {
   };
 
   return (
-    <div className="w-full max-w-[320px] mx-auto border border-gray-300">
+    <div className="w-full min-w-[420px] mx-auto border border-gray-300">
       <div className="p-4 border-b border-gray-300 bg-white">
         <h2 className="text-xl font-semibold text-center">Chat with Agents</h2>
       </div>
-      <div className="h-[400px] overflow-y-auto bg-white">
+      <div className="h-[300px] overflow-y-auto bg-white">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -98,14 +98,15 @@ export default function ChatArea() {
         <div className="flex gap-2">
           <input
             type="text"
+            
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            className="flex-1 p-2 border border-gray-300 rounded"
+            className="flex-1 p-2 border border-gray-300 rounded mt-[40px]"
             placeholder="Type a message..."
           />
           <button
             type="submit"
-            className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
+            className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 mt-[40px]"
           >
             Send
           </button>
