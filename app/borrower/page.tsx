@@ -12,9 +12,13 @@ import {
 } from "@/data/loanData";
 import WalletCard from "@/components/borrower/Wallet";
 import StatsCard from "@/components/borrower/StatsCard";
+import SmartChatArea from "@/components/borrower/CustomChatArea";
+import { Button } from "@/components/ui/button";
+import LoanAnalysis from "@/components/borrower/LoanAnalysis";
 
 export default function BorrowerPage() {
   const [loans, setLoans] = useState<Loan[]>(initialLoans);
+  const [results, setResults] = useState(false)
   const [userMetrics, setUserMetrics] =
     useState<UserMetrics>(initialUserMetrics);
 
@@ -70,30 +74,24 @@ export default function BorrowerPage() {
     });
   };
 
+
   return (
     <section>
       <div className="flex flex-row min-h-[200px] min-w-[500px] mt-[70px] items-center justify-center gap-5">
         <WalletCard />
         <StatsCard/>
       </div>
-      <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center  p-8 gap-16 font-[family-name:var(--font-geist-sans)]">
-        <main className="flex flex-col  row-start-2 items-center sm:items-start">
-          <div className="flex">
-            <ChatArea />
-            <GameScene />
-          </div>
-          <div className="w-full max-w-4xl">
-            <div className="mb-4 flex justify-between items-center">
-              <h2 className="text-xl font-semibold mt-10">Your Microloans Application</h2>
-              {/* <div className="text-sm">
-                <span className="mr-4">Points: {userMetrics.points}</span>
-                <span>Reputation: {userMetrics.reputation}</span>
-              </div> */}
-            </div>
-            <MicroLoanTable loans={loans} onPayment={handlePayment} />
-          </div>
-        </main>
+      <div>
+        <SmartChatArea/>
       </div>
+      <div className="ml-[250px] mt-5">
+        <Button onClick={()=>setResults(!results)}>See Results</Button>
+        <div className="mt-5">
+           {results && <><LoanAnalysis/></>}
+        </div>
+      </div>
+     
+      
     </section>
   );
 }

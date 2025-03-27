@@ -36,11 +36,11 @@ const CAT_ACCESSORIES = [
   },
   {
     id: 2,
-    name: "Party Hat",
-    description: "A colorful party hat for celebrations",
+    name: "Cat Food",
+    description: "Some delicious cat food to make your cat happy",
     image:
-      "https://images.unsplash.com/photo-1578730170732-4201e052b85b?w=250&h=250&fit=crop",
-    position: "head",
+      "/catfood.jpg",
+    position: "food",
     style: "top-[5%] left-1/2 transform -translate-x-1/2 w-[100px] h-[100px]",
   },
   {
@@ -224,7 +224,7 @@ export default function PetPage() {
             <CardHeader>
               <CardTitle>Your Financial Companion</CardTitle>
               <CardDescription>
-                NFT Reputation Score: {reputation + equipmentBonus}
+                NFT Reputation Score: {reputation + equipmentBonus} <span className="text-[12px] ml-5"> -Updated ↗️-</span>
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col items-center">
@@ -306,7 +306,7 @@ export default function PetPage() {
                 <TabsList className="grid grid-cols-4 mb-4">
                   <TabsTrigger value="accessories">Accessories</TabsTrigger>
                   <TabsTrigger value="loan-terms">Loan Terms</TabsTrigger>
-                  <TabsTrigger value="credentials">Credentials</TabsTrigger>
+                  <TabsTrigger value="history">History</TabsTrigger>
                   <TabsTrigger value="analysis">Analysis</TabsTrigger>
                 </TabsList>
 
@@ -448,14 +448,17 @@ export default function PetPage() {
                 </TabsContent>
 
                 {/* Credentials Tab */}
-                <TabsContent value="credentials">
+                <TabsContent value="history">
                   <div className="mt-4 p-3 bg-muted rounded-lg">
-                    <h4 className="font-medium mb-1">How Credentials Work</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Equip up to 2 financial credentials to boost your cat's
-                      reputation score. Higher reputation leads to better loan
-                      terms and increased borrowing limits.
-                    </p>
+                  <h4 className="font-medium mb-1">Loan Repayment History</h4>
+                    
+   
+    <ul className="list-disc list-inside text-sm text-muted-foreground">
+      <li>Paid back loan for purchasing a washing machine – <span className="font-medium">+20 points</span></li>
+      <li>Paid back loan for purchasing a bicycle – <span className="font-medium">+15 points</span></li>
+      <li>Paid back loan for starting a business – <span className="font-medium">+50 points</span></li>
+    </ul>
+  
                   </div>
                 </TabsContent>
 
