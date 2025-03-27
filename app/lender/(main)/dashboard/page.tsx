@@ -1,5 +1,5 @@
 "use client";
-
+import AggregatePool from "./components/AggregatePool";
 import { useState } from "react";
 import {
   BadgePercent,
@@ -184,6 +184,30 @@ const Dashboard = () => {
     (sum, pool) => sum + pool.current,
     0
   );
+
+  // Calculate total target across all pools
+  const totalPoolTarget = loanPools.reduce((sum, pool) => sum + pool.target, 0)
+
+  // Handle contribution to the aggregate pool
+  const handleAggregateContribution = (amount: number) => {
+    // Distribute the contribution proportionally across all pools
+    const updatedPools = loanPools.map((pool) => {
+      const proportion = pool.target / totalPoolTarget
+      const poolContribution = amount * proportion
+
+      return {
+        ...pool,
+        current: pool.current + poolContribution,
+      }
+    })
+
+    setLoanPools(updatedPools)
+  }
+
+  const handleAddFund1 = (poolId: string) => {
+    // This would open the modal for individual pool contributions
+    console.log(`Add fund to pool: ${poolId}`)
+  }
   return (
     <section className="px-2 py-2">
       <div className="px-[300px]">
@@ -200,6 +224,15 @@ const Dashboard = () => {
         {/*Main Content*/}
         <div className="mt-5 min-w-[1200px]">
           <DashboardStatistics/>
+
+           {/* Aggregate Pool Card */}
+           <div className="mb-8 mt-6">
+            <AggregatePool
+              totalAmount={totalPoolContributions}
+              targetAmount={totalPoolTarget}
+              onContribute={handleAggregateContribution}
+            />
+          </div>
           
       <div>
         <h2 className="text-xl font-semibold mb-4 mt-4">Available MicroLoan Pools</h2>
@@ -374,6 +407,7 @@ const Dashboard = () => {
         </div>
         
       </div>
+      
     </section>
   );
 };

@@ -92,6 +92,9 @@ export default function ActionVotingTab() {
   const [currentProposal, setCurrentProposal] = useState<ActionProposal | null>(null)
   const [selectedOption, setSelectedOption] = useState<number | null>(null)
 
+  const [rewardDialogOpen, setRewardDialogOpen] = useState(false)
+  const [earnedRewards, setEarnedRewards] = useState({ points: 0, xp: 0 })
+
   const handleOpenVoteDialog = (proposal: ActionProposal) => {
     setCurrentProposal(proposal)
     setSelectedOption(null)
@@ -100,6 +103,12 @@ export default function ActionVotingTab() {
 
   const handleVote = () => {
     if (!currentProposal || selectedOption === null) return
+
+    // Calculate random rewards (you can replace with your actual reward logic)
+    const pointsEarned = Math.floor(Math.random() * 50) + 10
+    const xpEarned = Math.floor(Math.random() * 20) + 5
+
+    setEarnedRewards({ points: pointsEarned, xp: xpEarned })
 
     setProposals((prev) =>
       prev.map((proposal) => {
@@ -118,6 +127,7 @@ export default function ActionVotingTab() {
     )
 
     setVoteDialogOpen(false)
+    setRewardDialogOpen(true)
   }
 
   const handleAddOption = () => {
@@ -211,7 +221,7 @@ export default function ActionVotingTab() {
                   placeholder="Describe your proposal"
                   className="min-h-[100px]"
                   value={newProposalDescription}
-                  onChange={(e : any) => setNewProposalDescription(e.target.value)}
+                  onChange={(e: any) => setNewProposalDescription(e.target.value)}
                 />
               </div>
               <div className="space-y-2">
@@ -321,7 +331,7 @@ export default function ActionVotingTab() {
           <div className="py-4">
             <RadioGroup
               value={selectedOption?.toString()}
-              onValueChange={(value : any) => setSelectedOption(Number.parseInt(value))}
+              onValueChange={(value: any) => setSelectedOption(Number.parseInt(value))}
             >
               {currentProposal?.options.map((option) => (
                 <div key={option.id} className="flex items-center space-x-2 mb-3">
@@ -334,6 +344,37 @@ export default function ActionVotingTab() {
           <DialogFooter>
             <Button onClick={handleVote} disabled={selectedOption === null}>
               Submit Vote
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={rewardDialogOpen} onOpenChange={setRewardDialogOpen}>
+        <DialogContent className="sm:max-w-[400px]">
+          <DialogHeader>
+            <DialogTitle>Vote Submitted!</DialogTitle>
+            <DialogDescription>Thank you for participating in governance.</DialogDescription>
+          </DialogHeader>
+          <div className="py-6 flex flex-col items-center justify-center space-y-4">
+            <div className="bg-primary/10 rounded-full p-6 w-24 h-24 flex items-center justify-center">
+              <Check className="h-12 w-12 text-primary" />
+            </div>
+            <div className="text-center space-y-2">
+              <h3 className="text-xl font-bold">Rewards Earned</h3>
+              <div className="flex justify-center gap-6">
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-primary">+{earnedRewards.points}</p>
+                  <p className="text-sm text-muted-foreground">Points</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-primary">+{earnedRewards.xp}</p>
+                  <p className="text-sm text-muted-foreground">XP Level</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setRewardDialogOpen(false)} className="w-full">
+              Continue
             </Button>
           </DialogFooter>
         </DialogContent>

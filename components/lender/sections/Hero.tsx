@@ -13,13 +13,12 @@ const Hero = () => {
             LenderDAO
           </div>
           <div className="flex flex-col items-center md:items-start">
-            <h1 className="text-5xl md:text-8xl font-extrabold tracking-tighter bg-gradient-to-b from-black to-[#001E80] text-transparent bg-clip-text mt-6">
+            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter bg-gradient-to-b from-black to-[#001E80] text-transparent bg-clip-text mt-6">
               Earn More as a MicroLoan Borrower and Lender With Us
             </h1>
-            <p className="text-2xl text-[#010D3E] tracking-tight mt-6">
-              Join our decentralized lending platform and earn higher returns
-              based on your lender level. Set custom rates, participate in
-              governance, and grow your crypto assets.
+            <p className="text-2xl text-[#010D3E] tracking-tight mt-6 font-bold">
+            Join us as a <span className="underline">lender</span>  in LendDAO to stake in our microloan pool, or as a <span className="underline">borrower </span> to access microloan financial services through LendSync
+            in a decentralized manner 😎
             </p>
           </div>
         </div>
