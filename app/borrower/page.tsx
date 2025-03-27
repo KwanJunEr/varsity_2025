@@ -86,7 +86,7 @@ export default function BorrowerPage() {
       </div>
       <div className="ml-[250px] mt-5">
         <Button onClick={()=>setResults(!results)}>See Results</Button>
-        <div className="mt-5">
+        <div className="mt-5 mb-5">
            {results && <><LoanAnalysis/></>}
         </div>
       </div>

@@ -80,8 +80,9 @@ export default function LoanAnalysis() {
           <Card className="mb-6 border-l-4 border-l-blue-500">
             <CardContent className="pt-6">
               <p className="text-gray-700">
-                The following three loans have been approved. However, purchase of washing machine is risky after you
-                have applied for that two loans. Business loan is considered okay since our platform encourages
+                The following three loans have been approved. However, purchase of washing machine is risky after you 
+                have applied for that two loans so group borrowing microloan 
+                strategy will be automatically applied. Business loan is considered okay since our platform encourages
                 entrepreneurship and the amount is not too much.
               </p>
             </CardContent>
