@@ -117,7 +117,7 @@ const LEVEL_PERKS = [
 
 export default function PetPage() {
   // Preset to Level 2 with some progress (150 reputation points)
-  const [reputation, setReputation] = useState(150);
+  const [reputation, setReputation] = useState(80);
   const [level, setLevel] = useState(2);
   const [progress, setProgress] = useState(50);
   const [equippedItems, setEquippedItems] = useState<number[]>([1]);
@@ -474,10 +474,10 @@ export default function PetPage() {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="p-4 border rounded-lg">
-                        <h4 className="font-medium mb-1">Base Reputation</h4>
-                        <p className="text-2xl font-bold">{reputation}</p>
+                        <h4 className="font-medium mb-1">Starting Base Reputation</h4>
+                        <p className="text-2xl font-bold">80</p>
                         <p className="text-sm text-muted-foreground mt-1">
-                          Earned through financial activities
+                          Earned through initial reputation NFT scoring profile setup
                         </p>
                       </div>
                       <div className="p-4 border rounded-lg">
