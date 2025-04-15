@@ -9,9 +9,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import PhaseOneContent from "../components/PhaseOneContent";
-import PhaseTwoContent from "../components/PhaseTwoContent";
-import PhaseThreeContent from "../components/PhaseThreeContent";
+// import PhaseOneContent from "../components/PhaseOneContent";
+// import PhaseTwoContent from "../components/PhaseTwoContent";
+// import PhaseThreeContent from "../components/PhaseThreeContent";
+import PhaseContent from "../components/PhaseContent";
 import PaymentInterface from "../components/PaymentInterface";
 import { generateRepaymentStrategies } from "@/lib/gemini";
 import { useState, useEffect } from "react"; // ✅ make sure this is imported
@@ -19,19 +20,21 @@ import { useState, useEffect } from "react"; // ✅ make sure this is imported
 export default function BusinessMicroloan() {
   console.log("✅ BusinessMicroloan component mounted!");
   // In a real app, this would come from your database or API
-  const loanProgress = 33; // First phase completed (out of 3)
+  // const loanProgress = 33; // First phase completed (out of 3)
   const loanAmount = 15000;
   const [paidAmount, setPaidAmount] = useState(0);
-  const remainingAmount = loanAmount - paidAmount;
-  const currentPhase = 1;
+  // const remainingAmount = loanAmount - paidAmount;
+  // const currentPhase = 1;
 
   const [phases, setPhases] = useState<{
     riskLevel: string;
     numberOfPhases: number;
+    phaseTitles: string[];      // ✅ add this
     descriptions: string[];
+    phaseObjectives: string[];  // ✅ add this
     dueDays: number[];
     amounts?: number[];
-  } | null>(null);
+  } | null>(null);  
 
   useEffect(() => {
     async function fetchIt() {
@@ -57,8 +60,11 @@ export default function BusinessMicroloan() {
   const calculateNextPaymentDue = () => {
     if (!phases?.dueDays?.length) return "April 15, 2025";
 
+    const currentIndex = calculateCurrentPhase() - 1; // 👈 第几个阶段，从0开始
+    const dueInDays = phases.dueDays[currentIndex] ?? 0;
+
     const baseDate = new Date("2025-04-15");
-    baseDate.setDate(baseDate.getDate() + phases.dueDays[0]);
+    baseDate.setDate(baseDate.getDate() + dueInDays);
 
     return baseDate.toLocaleDateString(undefined, {
       month: "long",
@@ -98,15 +104,16 @@ export default function BusinessMicroloan() {
             <CardHeader>
               <CardTitle>Loan Progress</CardTitle>
               <CardDescription>
-                Your loan is structured in 3 payment phases. Complete all phases
-                to unlock better credit terms.
+                Your loan is structured in {phases?.numberOfPhases ?? 3} payment
+                phases. Complete all phases to unlock better credit terms.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="mb-4">
                 <div className="flex justify-between mb-2">
                   <span className="text-sm font-medium">
-                    Phase {currentPhase} of 3
+                    Phase {calculateCurrentPhase()} of{" "}
+                    {phases?.numberOfPhases ?? 3}
                   </span>
                   <span className="text-sm font-medium">
                     {calculateProgress()}% Complete
@@ -225,7 +232,7 @@ export default function BusinessMicroloan() {
         </div>
       </div>
 
-      <Tabs defaultValue="phase1" className="w-full">
+      {/* <Tabs defaultValue="phase1" className="w-full">
         <TabsList className="grid grid-cols-3 mb-8">
           <TabsTrigger value="phase1">Phase 1: Employees</TabsTrigger>
           <TabsTrigger value="phase2">Phase 2: Equipment</TabsTrigger>
@@ -243,6 +250,37 @@ export default function BusinessMicroloan() {
         <TabsContent value="phase3">
           <PhaseThreeContent />
         </TabsContent>
+      </Tabs> */}
+      
+      <Tabs defaultValue={`phase${calculateCurrentPhase()}`} className="w-full">
+        <TabsList
+          className={`grid grid-cols-${phases?.numberOfPhases ?? 3} mb-8`}
+        >
+          {phases?.descriptions.map((desc, index) => (
+            <TabsTrigger key={index} value={`phase${index + 1}`}>
+              Phase {index + 1}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
+        {phases?.descriptions.map((desc, index) => (
+          <TabsContent key={index} value={`phase${index + 1}`}>
+            <PhaseContent
+              index={index}
+              title={phases.phaseTitles?.[index] ?? `Phase ${index + 1}`}
+              description={desc}
+              objective={phases.phaseObjectives?.[index] ?? ""}
+              amount={phases.amounts?.[index] ?? 0}
+              dueInDays={phases.dueDays?.[index] ?? 0}
+              isCompleted={
+                paidAmount >=
+                (phases.amounts
+                  ?.slice(0, index + 1)
+                  .reduce((a, b) => a + b, 0) ?? 0)
+              }
+            />
+          </TabsContent>
+        ))}
       </Tabs>
     </div>
   );
