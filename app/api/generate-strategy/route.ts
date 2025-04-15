@@ -18,23 +18,37 @@ export async function POST(request: Request) {
 
   // Updated prompt: Instruct Gemini to output a single JSON object
   const prompt = `
-Generate a repayment strategy for a microloan.
-Category: ${category}
-Loan Amount: ${amount}
-Risk Level: ${riskLevel}
+You are a financial assistant helping to structure microloan repayments.
 
-Please output a valid JSON object with the following structure:
+Given the following:
+
+- Category: ${category}
+- Loan Amount: ${amount}
+- Risk Level: ${riskLevel}
+
+🎯 Your task:
+Generate a repayment plan with **between 1 and 5 total phases** (no less than 1, no more than 5).
+
+Each phase should include:
+- A short title (e.g., "Employee Payroll", "Equipment Purchase")
+- A description (e.g., "Covers staff salary for 1 month")
+- An objective (e.g., "Maintain team morale and service quality")
+- A due day (number of days from today)
+- An amount
+
+🧾 Output format:
+Return a **single clean JSON object**, no markdown or extra text.
+
 {
-  "riskLevel": (string),
-  "numberOfPhases": (number),
-  "descriptions": (array of strings),
-  "dueDays": (array of numbers),
-  "amounts": (array of numbers) 
+  "riskLevel": "Low" | "Medium" | "High",
+  "numberOfPhases": 3,
+  "phaseTitles": ["Phase 1 Title", "Phase 2 Title", "Phase 3 Title"],
+  "descriptions": ["Description 1", "Description 2", "Description 3"],
+  "phaseObjectives": ["Objective 1", "Objective 2", "Objective 3"],
+  "dueDays": [30, 60, 90],
+  "amounts": [5000, 3000, 2000]
 }
-
-Ensure that the sum of the values in "amounts" equals the provided loan amount.
-Return ONLY the JSON object with no additional text or formatting.
-  `;
+`;
 
   console.log("✅ API Route hit!");
 
@@ -46,7 +60,11 @@ Return ONLY the JSON object with no additional text or formatting.
     console.log("🤖 Raw Gemini Output:", text);
 
     // Remove code fences (```json and ```), if present
-    const cleanText = text.replace(/```json|```/g, "").trim();
+    const cleanText = text
+      .replace(/```json|```/g, "") // remove markdown code fences
+      .replace(/,\s*([}\]])/g, "$1") // remove trailing commas before } or ]
+      .trim();
+
     console.log("🧹 Cleaned Gemini Output:", cleanText);
 
     const parsed = JSON.parse(cleanText);

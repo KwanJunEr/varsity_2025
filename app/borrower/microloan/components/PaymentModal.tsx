@@ -17,27 +17,32 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface PaymentModalProps {
-  currentPhase: number
-  phaseAmount: number
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  currentPhase: number;
+  phaseAmount: number;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onPaymentSuccess: (amount: number) => void; // ✅ 改名
 }
 
-export default function PaymentModal({ currentPhase, phaseAmount, open, onOpenChange }: PaymentModalProps) {
+
+export default function PaymentModal({ currentPhase, phaseAmount, open, onOpenChange, onPaymentSuccess}: PaymentModalProps) {
   const [paymentMethod, setPaymentMethod] = useState("card")
   const [paymentAmount, setPaymentAmount] = useState(phaseAmount.toString())
   const [paymentSuccess, setPaymentSuccess] = useState(false)
 
   const handlePayment = () => {
-    // In a real app, this would process the payment
-    setPaymentSuccess(true)
-
+    // ✅ Call parent handlePayment when process payment is clicked
+    onPaymentSuccess(Number(paymentAmount)); // ✅ call parent function
+  
+    setPaymentSuccess(true);
+  
     // Reset after 3 seconds and close modal
     setTimeout(() => {
-      setPaymentSuccess(false)
-      onOpenChange(false)
-    }, 3000)
-  }
+      setPaymentSuccess(false);
+      onOpenChange(false);
+    }, 3000);
+  };
+  
 
   const handleClose = () => {
     // Reset state when modal is closed

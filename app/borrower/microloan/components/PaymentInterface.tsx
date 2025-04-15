@@ -28,8 +28,7 @@ export default function PaymentInterface({
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const makePayment = () => {
-    handlePayment(phaseAmount);
-    setIsModalOpen(true);
+    setIsModalOpen(true); // ✅ Only open modal, don't update payment here
   };
 
   return (
@@ -85,6 +84,7 @@ export default function PaymentInterface({
           phaseAmount={phaseAmount}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
+          onPaymentSuccess={handlePayment} // ✅ Pass the handler from parent
         />
       </CardContent>
     </Card>
