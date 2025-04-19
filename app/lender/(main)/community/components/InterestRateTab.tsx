@@ -18,25 +18,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts"
 import { Loader2, TrendingUp, ArrowUpRight, Sparkles } from "lucide-react"
-
-// Mock data for charts
-const marketTrendsData = [
-  { month: "Jan", fedRate: 4.5, treasuryYield: 3.8, mortgageRate: 6.2 },
-  { month: "Feb", fedRate: 4.5, treasuryYield: 3.9, mortgageRate: 6.3 },
-  { month: "Mar", fedRate: 4.75, treasuryYield: 4.0, mortgageRate: 6.5 },
-  { month: "Apr", fedRate: 4.75, treasuryYield: 3.9, mortgageRate: 6.4 },
-  { month: "May", fedRate: 5.0, treasuryYield: 4.1, mortgageRate: 6.7 },
-  { month: "Jun", fedRate: 5.0, treasuryYield: 4.2, mortgageRate: 6.8 },
-]
-
-const borrowingData = [
-  { month: "Jan", loanVolume: 12.5, defaultRate: 1.2, avgLoanSize: 8.4 },
-  { month: "Feb", loanVolume: 13.2, defaultRate: 1.3, avgLoanSize: 8.6 },
-  { month: "Mar", loanVolume: 14.8, defaultRate: 1.2, avgLoanSize: 9.1 },
-  { month: "Apr", loanVolume: 14.2, defaultRate: 1.4, avgLoanSize: 9.0 },
-  { month: "May", loanVolume: 15.5, defaultRate: 1.5, avgLoanSize: 9.3 },
-  { month: "Jun", loanVolume: 16.2, defaultRate: 1.6, avgLoanSize: 9.5 },
-]
+import { generateInterestRateAnalysis } from "@/lib/gemini"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 type InterestRateProposal = {
   id: number
@@ -53,76 +36,85 @@ type InterestRateProposal = {
   userVoted: boolean | null
 }
 
-const initialProposals: InterestRateProposal[] = [
-  {
-    id: 1,
-    title: "Lending Rate Adjustment for Q3",
-    currentRate: 5.25,
-    proposedRate: 5.75,
-    rationale:
-      "Based on rising market rates and increased demand for loans, a 0.5% increase is recommended to maintain competitive returns for lenders while managing risk.",
-    aiGenerated: true,
-    status: "active",
-    deadline: "3 days left",
-    totalVotes: 124,
-    votesFor: 89,
-    votesAgainst: 35,
-    userVoted: null,
-  },
-  {
-    id: 2,
-    title: "Stablecoin Deposit Rate Update",
-    currentRate: 3.8,
-    proposedRate: 4.2,
-    rationale:
-      "Increasing stablecoin deposit rates will help attract more liquidity to the protocol and remain competitive with other DeFi platforms.",
-    aiGenerated: false,
-    status: "completed",
-    deadline: "Ended 5 days ago",
-    totalVotes: 187,
-    votesFor: 142,
-    votesAgainst: 45,
-    userVoted: true,
-  },
-]
+// Add this mock data at the top of your component
+const borrowingTrendsData = [
+  { month: "Jan", loanVolume: 12.5, defaultRate: 1.2, avgLoanSize: 8.4 },
+  { month: "Feb", loanVolume: 13.2, defaultRate: 1.3, avgLoanSize: 8.6 },
+  { month: "Mar", loanVolume: 14.8, defaultRate: 1.2, avgLoanSize: 9.1 },
+  { month: "Apr", loanVolume: 15.5, defaultRate: 1.4, avgLoanSize: 9.3 },
+  { month: "May", loanVolume: 15.9, defaultRate: 1.5, avgLoanSize: 9.4 },
+  { month: "Jun", loanVolume: 16.2, defaultRate: 1.6, avgLoanSize: 9.5 },
+];
 
 export default function InterestRateTab() {
-  const [proposals, setProposals] = useState<InterestRateProposal[]>(initialProposals)
+  const [proposals, setProposals] = useState<InterestRateProposal[]>([])
   const [isGeneratingAnalysis, setIsGeneratingAnalysis] = useState(false)
   const [analysisGenerated, setAnalysisGenerated] = useState(false)
+  const [marketData, setMarketData] = useState({
+    fedRate: [] as any[],
+    treasuryYield: [] as any[],
+  })
+  const [analysisData, setAnalysisData] = useState<{
+    recommendedRate: number;
+    rationale: string;
+    marketAnalysis: {
+      fedRateImpact: string;
+      treasuryYieldImpact: string;
+      riskAssessment: string;
+    };
+    confidence: string;
+    expectedImpact: {
+      lenderProfitability: string;
+      borrowerAffordability: string;
+    };
+  } | null>(null)
   const [voteDialogOpen, setVoteDialogOpen] = useState(false)
   const [currentProposal, setCurrentProposal] = useState<InterestRateProposal | null>(null)
   const [voteChoice, setVoteChoice] = useState<"for" | "against" | null>(null)
-  const [analysisTab, setAnalysisTab] = useState("market")
+  const [analysisTab, setAnalysisTab] = useState("market");
 
-  const handleGenerateAnalysis = () => {
-    setIsGeneratingAnalysis(true)
+  const handleGenerateAnalysis = async () => {
+    setIsGeneratingAnalysis(true);
 
-    // Simulate AI analysis generation
-    setTimeout(() => {
-      setIsGeneratingAnalysis(false)
-      setAnalysisGenerated(true)
+    try {
+      const analysis = await generateInterestRateAnalysis();
 
-      // Add a new AI-generated proposal
+      if (!analysis) {
+        throw new Error("Failed to generate analysis");
+      }
+
+      // Update market data
+      if (analysis.marketTrends) {
+        setMarketData(analysis.marketTrends);
+      }
+
+      // Update analysis data
+      setAnalysisData(analysis);
+
+      // Create new proposal from analysis
       const newProposal: InterestRateProposal = {
-        id: proposals.length + 1,
-        title: "AI-Recommended Rate Adjustment",
-        currentRate: 4.5,
-        proposedRate: 4.75,
-        rationale:
-          "Based on current market trends showing increased Fed rates and treasury yields, combined with a 12% increase in borrowing volume and a slight uptick in default rates, a modest 0.25% increase is recommended to balance risk management with competitive rates.",
+        id: Date.now(),
+        title: "AI-Generated Rate Adjustment",
+        currentRate: 5.25, // Current base rate
+        proposedRate: analysis.recommendedRate,
+        rationale: analysis.rationale,
+        status: "pending" as const,
         aiGenerated: true,
-        status: "pending",
-        deadline: "Awaiting approval",
         totalVotes: 0,
         votesFor: 0,
         votesAgainst: 0,
         userVoted: null,
-      }
+        deadline: "3 days left"
+      };
 
-      setProposals((prev) => [newProposal, ...prev])
-    }, 3000)
-  }
+      setProposals(prev => [newProposal, ...prev]);
+      setAnalysisGenerated(true);
+    } catch (error) {
+      console.error("Error generating analysis:", error);
+    } finally {
+      setIsGeneratingAnalysis(false);
+    }
+  };
 
   const handleOpenVoteDialog = (proposal: InterestRateProposal) => {
     setCurrentProposal(proposal)
@@ -131,7 +123,19 @@ export default function InterestRateTab() {
   }
 
   const handleVote = () => {
-    if (!currentProposal || voteChoice === null) return
+    if (!currentProposal || (currentProposal.status !== "pending" && voteChoice === null)) return;
+
+    if (currentProposal.status === "pending") {
+      // Use Alert component instead of toast
+      return (
+        <Alert>
+          <AlertTitle>Proposal Approved!</AlertTitle>
+          <AlertDescription>
+            The proposal has been opened for community voting.
+          </AlertDescription>
+        </Alert>
+      );
+    }
 
     setProposals((prev) =>
       prev.map((proposal) => {
@@ -144,14 +148,14 @@ export default function InterestRateTab() {
             votesAgainst: voteChoice === "against" ? proposal.votesAgainst + 1 : proposal.votesAgainst,
             status: proposal.status === "pending" ? "active" : proposal.status,
             deadline: proposal.status === "pending" ? "7 days left" : proposal.deadline,
-          }
+          };
         }
-        return proposal
+        return proposal;
       }),
-    )
+    );
 
-    setVoteDialogOpen(false)
-  }
+    setVoteDialogOpen(false);
+  };
 
   const calculatePercentage = (votes: number, total: number) => {
     if (total === 0) return 0
@@ -204,15 +208,25 @@ export default function InterestRateTab() {
 
                     <div className="h-[300px] w-full">
                       <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={marketTrendsData}>
+                        <LineChart data={marketData.fedRate || []}>
                           <CartesianGrid strokeDasharray="3 3" />
                           <XAxis dataKey="month" />
-                          <YAxis />
+                          <YAxis domain={[0, 8]} />
                           <Tooltip />
                           <Legend />
-                          <Line type="monotone" dataKey="fedRate" stroke="#8884d8" name="Fed Rate" />
-                          <Line type="monotone" dataKey="treasuryYield" stroke="#82ca9d" name="10Y Treasury" />
-                          <Line type="monotone" dataKey="mortgageRate" stroke="#ff7300" name="Mortgage Rate" />
+                          <Line 
+                            type="monotone" 
+                            dataKey="rate" 
+                            stroke="#8884d8" 
+                            name="Federal Funds Rate" 
+                          />
+                          <Line 
+                            type="monotone" 
+                            dataKey="rate" 
+                            stroke="#82ca9d" 
+                            name="10Y Treasury Yield"
+                            data={marketData.treasuryYield || []}
+                          />
                         </LineChart>
                       </ResponsiveContainer>
                     </div>
@@ -220,26 +234,20 @@ export default function InterestRateTab() {
                     <div className="grid grid-cols-3 gap-4">
                       <div className="bg-muted rounded-lg p-4">
                         <div className="text-sm text-muted-foreground mb-1">Fed Rate</div>
-                        <div className="text-2xl font-bold">5.0%</div>
-                        <div className="flex items-center text-sm text-green-500 mt-1">
-                          <ArrowUpRight className="h-3 w-3 mr-1" />
-                          +0.25% in 2 months
+                        <div className="text-2xl font-bold">
+                          {marketData.fedRate?.[0]?.rate.toFixed(2)}%
                         </div>
                       </div>
                       <div className="bg-muted rounded-lg p-4">
                         <div className="text-sm text-muted-foreground mb-1">10Y Treasury</div>
-                        <div className="text-2xl font-bold">4.2%</div>
-                        <div className="flex items-center text-sm text-green-500 mt-1">
-                          <ArrowUpRight className="h-3 w-3 mr-1" />
-                          +0.3% in 6 months
+                        <div className="text-2xl font-bold">
+                          {marketData.treasuryYield?.[0]?.rate.toFixed(2)}%
                         </div>
                       </div>
                       <div className="bg-muted rounded-lg p-4">
-                        <div className="text-sm text-muted-foreground mb-1">Mortgage Rate</div>
-                        <div className="text-2xl font-bold">6.8%</div>
-                        <div className="flex items-center text-sm text-green-500 mt-1">
-                          <ArrowUpRight className="h-3 w-3 mr-1" />
-                          +0.6% in 6 months
+                        <div className="text-sm text-muted-foreground mb-1">Risk Level</div>
+                        <div className="text-2xl font-bold">
+                          {analysisData?.confidence || "N/A"}
                         </div>
                       </div>
                     </div>
@@ -258,7 +266,7 @@ export default function InterestRateTab() {
 
                     <div className="h-[300px] w-full">
                       <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={borrowingData}>
+                        <LineChart data={borrowingTrendsData}>
                           <CartesianGrid strokeDasharray="3 3" />
                           <XAxis dataKey="month" />
                           <YAxis />
@@ -307,21 +315,37 @@ export default function InterestRateTab() {
                 <h3 className="text-lg font-medium mb-3">AI Recommendation</h3>
                 <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
                   <div className="flex justify-between items-center mb-3">
-                    <div>
+                    {/* <div>
                       <span className="text-sm text-muted-foreground">Current Rate</span>
-                      <div className="text-xl font-bold">4.5%</div>
+                      <div className="text-xl font-bold">{marketData.fedRate?.[0]?.rate.toFixed(2)}%</div>
                     </div>
                     <div className="text-2xl font-bold">→</div>
                     <div>
                       <span className="text-sm text-muted-foreground">Recommended Rate</span>
-                      <div className="text-xl font-bold text-primary">4.75%</div>
+                      <div className="text-xl font-bold text-primary">{analysisData?.recommendedRate.toFixed(2)}%</div>
+                    </div> */}
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="text-sm font-medium mb-2">Rationale</h4>
+                      <p className="text-sm">{analysisData?.rationale}</p>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-medium mb-2">Market Analysis</h4>
+                      <div className="space-y-2 text-sm">
+                        <p><strong>Fed Rate Impact:</strong> {analysisData?.marketAnalysis.fedRateImpact}</p>
+                        <p><strong>Treasury Yield Impact:</strong> {analysisData?.marketAnalysis.treasuryYieldImpact}</p>
+                        <p><strong>Risk Assessment:</strong> {analysisData?.marketAnalysis.riskAssessment}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-medium mb-2">Expected Impact</h4>
+                      <div className="space-y-2 text-sm">
+                        <p><strong>Lender Profitability:</strong> {analysisData?.expectedImpact.lenderProfitability}</p>
+                        <p><strong>Borrower Affordability:</strong> {analysisData?.expectedImpact.borrowerAffordability}</p>
+                      </div>
                     </div>
                   </div>
-                  <p className="text-sm">
-                    Based on current market trends showing increased Fed rates and treasury yields, combined with a 12%
-                    increase in borrowing volume and a slight uptick in default rates, a modest 0.25% increase is
-                    recommended to balance risk management with competitive rates.
-                  </p>
                 </div>
               </div>
             </div>
