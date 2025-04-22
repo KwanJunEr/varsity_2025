@@ -34,10 +34,10 @@ export function AIInsightsModal({ open, onOpenChange, loan, isGenerating }: AIIn
               <span>Purpose:</span>
               <span className="font-medium">{loan.purpose}</span>
             </div>
-            <div className="flex justify-between text-sm">
+            {/* <div className="flex justify-between text-sm">
               <span>Risk Score:</span>
               <span className="font-medium">{loan.riskScore}/10</span>
-            </div>
+            </div> */}
           </div>
 
           <div className="border rounded-lg p-4 mb-4">

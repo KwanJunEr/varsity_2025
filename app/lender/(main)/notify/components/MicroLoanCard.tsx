@@ -1,7 +1,15 @@
+// components/MicroloanCard.tsx
 "use client"
 
-import { useState } from "react"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import React, { useState } from "react"
+import axios from "axios"                // ← import axios
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
@@ -17,25 +25,58 @@ interface MicroloanCardProps {
   onGenerateInsights: (id: string, insights: string) => void
 }
 
-export function MicroloanCard({ loan, onVote, onGenerateInsights }: MicroloanCardProps) {
+export function MicroloanCard({
+  loan,
+  onVote,
+  onGenerateInsights,
+}: MicroloanCardProps) {
   const [showVoteModal, setShowVoteModal] = useState(false)
   const [showInsightsModal, setShowInsightsModal] = useState(false)
   const [isGeneratingInsights, setIsGeneratingInsights] = useState(false)
 
-  const approvalPercentage = Math.round((loan.votes.approve / (loan.votes.total || 1)) * 100)
-
+  const approvalPercentage = Math.round(
+    (loan.votes.approve / (loan.votes.total || 1)) * 100
+  )
   const timeLeft = calculateTimeLeft(loan.endDate)
 
   const handleGenerateInsights = async () => {
     setIsGeneratingInsights(true)
     setShowInsightsModal(true)
 
-    // Simulate AI insight generation
-    setTimeout(() => {
-      const insights = generateMockInsights(loan)
-      onGenerateInsights(loan.id, insights)
+    try {
+      // === BUILD PAYLOAD ===
+      // You must supply exactly the same features your model expects.
+      // Here’s an example of how you might gather them from `loan`:
+      const payload = {
+        features: {
+          StatedMonthlyIncome:    loan.StatedMonthlyIncome,
+          DebtToIncomeRatio:      loan.DebtToIncomeRatio,
+          DelinquenciesLast7Years: loan.DelinquenciesLast7Years,
+          CreditGrade:            loan.CreditGrade,
+          ProsperRatingAlpha:     loan.ProsperRatingAlpha,
+          BorrowerState:          loan.BorrowerState,
+          Occupation:             loan.Occupation,
+          EmploymentStatus:       loan.EmploymentStatus,
+          IncomeRange:            loan.IncomeRange,
+          amount:                 loan.amount,                // if still used
+        },
+      }
+
+      // === CALL YOUR FASTAPI ENDPOINT ===
+      const { data } = await axios.post(
+        "http://127.0.0.1:8000/predict",
+        payload
+      )
+
+      // === FEED THE RETURNED SCORE INTO YOUR UI ===
+      const score = data.predicted_score
+      onGenerateInsights(loan.id, `AI Risk Score: ${score}/10`)
+    } catch (err) {
+      console.error("AI call failed:", err)
+      onGenerateInsights(loan.id, "AI call failed")
+    } finally {
       setIsGeneratingInsights(false)
-    }, 1500)
+    }
   }
 
   return (
@@ -44,7 +85,7 @@ export function MicroloanCard({ loan, onVote, onGenerateInsights }: MicroloanCar
         <CardHeader>
           <div className="flex justify-between items-start">
             <CardTitle className="text-xl">{loan.applicantName}</CardTitle>
-            <Badge variant={'destructive'} className="ml-2">
+            <Badge variant={"destructive"} className="ml-2">
               <AlertTriangle className="h-3.5 w-3.5 mr-1" />
               Risk: {loan.riskScore}/10
             </Badge>
@@ -53,17 +94,22 @@ export function MicroloanCard({ loan, onVote, onGenerateInsights }: MicroloanCar
             {formatCurrency(loan.amount)} • {loan.purpose}
           </div>
         </CardHeader>
+
         <CardContent className="flex-grow">
           <div className="space-y-4">
             <div>
               <h4 className="font-medium mb-1">Risk Factors:</h4>
-              <p className="text-sm text-muted-foreground">{loan.riskExplanation}</p>
+              <p className="text-sm text-muted-foreground">
+                {loan.riskExplanation}
+              </p>
             </div>
 
             {loan.aiInsights && (
               <div>
                 <h4 className="font-medium mb-1">AI Insights:</h4>
-                <p className="text-sm text-muted-foreground">{loan.aiInsights}</p>
+                <p className="text-sm text-muted-foreground">
+                  {loan.aiInsights}
+                </p>
               </div>
             )}
 
@@ -91,23 +137,34 @@ export function MicroloanCard({ loan, onVote, onGenerateInsights }: MicroloanCar
             </div>
           </div>
         </CardContent>
+
         <CardFooter className="flex gap-2 border-t pt-4">
-          <Button variant="outline" className="flex-1" onClick={() => setShowVoteModal(true)}>
+          <Button
+            variant="outline"
+            className="flex-1"
+            onClick={() => setShowVoteModal(true)}
+          >
             Vote
           </Button>
-          <Button variant="default" className="flex-1" onClick={handleGenerateInsights} disabled={!!loan.aiInsights}>
+          <Button
+            variant="default"
+            className="flex-1"
+            onClick={handleGenerateInsights}
+            disabled={isGeneratingInsights}
+          >
             <BarChart className="h-4 w-4 mr-2" />
             {loan.aiInsights ? "View Insights" : "Generate Insights"}
           </Button>
         </CardFooter>
       </Card>
 
+      {/* your modals stay exactly the same */}
       <VoteModal
         open={showVoteModal}
         onOpenChange={setShowVoteModal}
         loan={loan}
-        onVote={(vote) => {
-          onVote(loan.id, vote)
+        onVote={(v) => {
+          onVote(loan.id, v)
           setShowVoteModal(false)
         }}
       />
@@ -121,22 +178,3 @@ export function MicroloanCard({ loan, onVote, onGenerateInsights }: MicroloanCar
     </>
   )
 }
-
-function getRiskVariant(score: number) {
-  if (score >= 8) return "destructive"
-  if (score >= 6) return "warning"
-  return "secondary"
-}
-
-function generateMockInsights(loan: Microloan): string {
-  const insights = [
-    `Based on the applicant's credit history and current debt ratio of ${Math.round(Math.random() * 60 + 20)}%, this loan carries significant risk.`,
-    `The requested amount (${formatCurrency(loan.amount)}) is ${loan.amount > 5000 ? "high" : "reasonable"} relative to the applicant's income.`,
-    `Historical data suggests a ${Math.round(Math.random() * 40 + 30)}% probability of full repayment for loans with similar risk profiles.`,
-    `The purpose of "${loan.purpose}" ${Math.random() > 0.5 ? "aligns with productive use" : "may not generate sufficient returns"} to ensure repayment.`,
-    `${Math.random() > 0.5 ? "Recommend caution" : "Consider approval with strict monitoring"} due to ${loan.riskScore > 7 ? "very high" : "high"} risk score.`,
-  ]
-
-  return insights.join(" ")
-}
-
