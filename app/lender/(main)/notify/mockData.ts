@@ -7,14 +7,22 @@ export const mockMicroloans: Microloan[] = [
     amount: 3500,
     purpose: "Expanding small grocery store",
     riskScore: 8,
-    riskExplanation: "Previous loan default, limited business history, and high local competition in the area.",
+    riskExplanation:
+      "Previous loan default, limited business history, and high local competition in the area.",
     aiInsights: null,
-    votes: {
-      approve: 12,
-      reject: 8,
-      total: 20,
-    },
-    endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days from now
+    votes: { approve: 12, reject: 8, total: 20 },
+    endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
+
+    // — the fields your model expects —
+    StatedMonthlyIncome: 3000,
+    DebtToIncomeRatio: 0.40,
+    DelinquenciesLast7Years: 2,
+    CreditGrade: "C",
+    ProsperRatingAlpha: "B",
+    BorrowerState: "CO",
+    Occupation: "Other",
+    EmploymentStatus: "Self-employed",
+    IncomeRange: "$25,000-49,999",
   },
   {
     id: "2",
@@ -22,29 +30,43 @@ export const mockMicroloans: Microloan[] = [
     amount: 2000,
     purpose: "Agricultural equipment purchase",
     riskScore: 7,
-    riskExplanation: "Seasonal income dependency, weather risks, and limited collateral.",
+    riskExplanation:
+      "Seasonal income dependency, weather risks, and limited collateral.",
     aiInsights: null,
-    votes: {
-      approve: 18,
-      reject: 5,
-      total: 23,
-    },
-    endDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days from now
+    votes: { approve: 18, reject: 5, total: 23 },
+    endDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+
+    StatedMonthlyIncome: 250000,
+    DebtToIncomeRatio: 0,
+    DelinquenciesLast7Years: 1,
+    CreditGrade: "C",
+    ProsperRatingAlpha: "A",
+    BorrowerState: "GA",
+    Occupation: "Other",
+    EmploymentStatus: "Employed",
+    IncomeRange: "$25,000-49,999",
   },
   {
     id: "3",
     applicantName: "Priya Sharma",
-    amount: 5000,
+    amount: 500,
     purpose: "Textile workshop expansion",
     riskScore: 9,
-    riskExplanation: "High debt-to-income ratio, volatile industry, and recent market downturn in textiles.",
+    riskExplanation:
+      "High debt-to-income ratio, volatile industry, and recent market downturn in textiles.",
     aiInsights: null,
-    votes: {
-      approve: 7,
-      reject: 15,
-      total: 22,
-    },
-    endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days from now
+    votes: { approve: 7, reject: 15, total: 22 },
+    endDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
+
+    StatedMonthlyIncome: 1000,
+    DebtToIncomeRatio: 100,
+    DelinquenciesLast7Years: 3,
+    CreditGrade: "D",
+    ProsperRatingAlpha: "B",
+    BorrowerState: "GA",
+    Occupation: "Other",
+    EmploymentStatus: "Employed",
+    IncomeRange: "$25,000-49,999",
   },
   {
     id: "4",
@@ -52,14 +74,21 @@ export const mockMicroloans: Microloan[] = [
     amount: 1500,
     purpose: "Food truck repairs",
     riskScore: 6,
-    riskExplanation: "Inconsistent income history, competitive market, but good repayment record on previous loans.",
+    riskExplanation:
+      "Inconsistent income history, competitive market, but good repayment record on previous loans.",
     aiInsights: null,
-    votes: {
-      approve: 25,
-      reject: 10,
-      total: 35,
-    },
-    endDate: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString(), // 4 days from now
+    votes: { approve: 25, reject: 10, total: 35 },
+    endDate: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString(),
+
+    StatedMonthlyIncome: 1500,
+    DebtToIncomeRatio: 0.24,
+    DelinquenciesLast7Years: 1,
+    CreditGrade: "B",
+    ProsperRatingAlpha: "A",
+    BorrowerState: "CO",
+    Occupation: "Other",
+    EmploymentStatus: "Employed",
+    IncomeRange: "$0-24,999",
   },
   {
     id: "5",
@@ -70,12 +99,18 @@ export const mockMicroloans: Microloan[] = [
     riskExplanation:
       "New business venture, limited market validation, and high startup costs relative to projected income.",
     aiInsights: null,
-    votes: {
-      approve: 9,
-      reject: 11,
-      total: 20,
-    },
-    endDate: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toISOString(), // 6 days from now
+    votes: { approve: 9, reject: 11, total: 20 },
+    endDate: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toISOString(),
+
+    StatedMonthlyIncome: 3000,
+    DebtToIncomeRatio: 0.30,
+    DelinquenciesLast7Years: 2,
+    CreditGrade: "C",
+    ProsperRatingAlpha: "C",
+    BorrowerState: "CA",
+    Occupation: "Other",
+    EmploymentStatus: "Not available",
+    IncomeRange: "$25,000-49,999",
   },
   {
     id: "6",
@@ -83,14 +118,22 @@ export const mockMicroloans: Microloan[] = [
     amount: 2500,
     purpose: "Fishing equipment upgrade",
     riskScore: 7,
-    riskExplanation: "Environmental risks, fluctuating market prices, and limited alternative income sources.",
+    riskExplanation:
+      "Environmental risks, fluctuating market prices, and limited alternative income sources.",
     aiInsights: null,
-    votes: {
-      approve: 15,
-      reject: 12,
-      total: 27,
-    },
-    endDate: new Date(Date.now() + 3.5 * 24 * 60 * 60 * 1000).toISOString(), // 3.5 days from now
+    votes: { approve: 15, reject: 12, total: 27 },
+    endDate: new Date(
+      Date.now() + 3.5 * 24 * 60 * 60 * 1000
+    ).toISOString(),
+
+    StatedMonthlyIncome: 2400,
+    DebtToIncomeRatio: 0.35,
+    DelinquenciesLast7Years: 1,
+    CreditGrade: "C",
+    ProsperRatingAlpha: "D",
+    BorrowerState: "GA",
+    Occupation: "Other",
+    EmploymentStatus: "Employed",
+    IncomeRange: "$25,000-49,999",
   },
 ]
-
